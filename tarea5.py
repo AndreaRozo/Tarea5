@@ -30,8 +30,8 @@ manchas = (c[:,3])
 
 # Grafica numero de manchas en funcion del tiempo
 pylab.scatter(anos,manchas)
-pylab.xlabel('Ano')
-pylab.ylabel('N(n)')
+pylab.xlabel('$Ano$')
+pylab.ylabel('$N(n)$')
 pylab.title('Numero de manchas solares en funcion del anho')
 pylab.grid(True)
 pylab.savefig('GraficaManchas')
@@ -43,13 +43,28 @@ dt = 1 							# 1 mes de intervalo
 fft_manchas = np.fft.fft(manchas)/n 			# Transformada de Fourier normalizada
 freq = np.fft.fftfreq(n,dt)				# Vector de frecuencias
 
-fig1 = plt.figure()
-pylab.plot(freq,abs(fft_manchas))
-pylab.xlabel('$f\ [1/mes]$')
-pylab.ylabel('$F\{N\}(f)\ [manchas.mes]$')
-pylab.title('$\mathrm{Espectro\ de\ frecuencias\ del\ numero\ de\ manchas}$', fontsize=20)
-pylab.grid(True)
-pylab.savefig('TransfManchas')
 
+# Espectro de potencias
+f2 = abs(fft_manchas)*abs(fft_manchas)
+
+fig1 = plt.figure()
+pylab.plot(freq,abs(f2))
+pylab.xlabel('$f\ [1/mes]$')
+pylab.ylabel('$(F\{N\})^2(f)\ [manchas.mes]^2$')
+pylab.title('$\mathrm{Espectro\ de\ potencias\ del\ numero\ de\ manchas}$', fontsize=20)
+pylab.grid(True)
+pylab.savefig('PotenciaManchas')
+
+# Espectro de frecuencias en funcion del periodo T
+m = np.size(freq)
+per = 1/(12*freq[m/(20*12):m/12])
+f3 = f2[m/(20*12):m/12]
+fig2 = plt.figure()
+pylab.plot(per,abs(f3))
+pylab.xlabel('$T\ [anho]$')
+pylab.ylabel('$(F\{N\})^2(T)\ [manchas.mes]^2$')
+pylab.title('$\mathrm{Espectro\ de\ potencias\ del\ numero\ de\ manchas}$', fontsize=20)
+pylab.grid(True)
+pylab.savefig('PotenciaManchasPeriodo')
 
 
