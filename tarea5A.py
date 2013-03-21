@@ -30,9 +30,9 @@ manchas = (c[:,3])
 
 # Grafica numero de manchas en funcion del tiempo
 pylab.scatter(anos,manchas)
-pylab.xlabel('$Ano$')
+pylab.xlabel('$A\~no$')
 pylab.ylabel('$N(n)$')
-pylab.title('Numero de manchas solares en funcion del anho')
+pylab.title('$\mathrm{Numero\ de\ manchas\ solares\ en\ funcion\ del\ a\~no}$', fontsize=20)
 pylab.grid(True)
 pylab.savefig('GraficaManchas')
 
@@ -63,25 +63,25 @@ per = 1/(12*freq_shifted[m/(20*12)+m/2:m/12+m/2])
 f3 = f2[m/(20*12)+m/2:m/12+m/2]
 fig2 = plt.figure()
 pylab.plot(per,abs(f3))
-pylab.xlabel('$T\ [anho]$')
+pylab.xlabel('$T\ [a\~no]$')
 pylab.ylabel('$(F\{N\})^2(T)\ [manchas.mes]^2$')
 pylab.title('$\mathrm{Espectro\ de\ potencias\ del\ numero\ de\ manchas}$', fontsize=20)
 pylab.grid(True)
 pylab.savefig('PotenciaManchasPeriodo')
 
-# Filtro pasa-altas para la Transformada de Fourier
+# Filtro para la Transformada de Fourier
 fft_filtrado = fft_manchas_shift
-freq_corte = 1/(20*12)
+freq_corte = 1/12.0
 fft_filtrado[np.abs(freq_shifted) > freq_corte] = 0
-
+                
 inv_filtro = np.fft.ifft(fft_filtrado)
 
 fig3 = plt.figure()
-pylab.plot(freq_shifted,abs(fft_filtrado))
-#pylab.plot(anos,np.real(inv_filtro))
-pylab.xlabel('$Ano$')
+pylab.plot(freq,abs(fft_filtrado))
+#pylab.scatter(anos,abs(np.real(inv_filtro)))
+pylab.xlabel('$A\~no$')
 pylab.ylabel('$N(n)$')
-pylab.title('Numero de manchas solares limpias en funcion del anho')
+pylab.title('$\mathrm{Numero\ de\ manchas\ solares\ limpias\ en\ funcion\ del\ a\~no}$', fontsize=18)
 pylab.grid(True)
 pylab.savefig('GraficaManchasLimpias')
 
