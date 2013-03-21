@@ -16,7 +16,7 @@ import scipy
 from scipy.fftpack import fft, fftfreq
 
 # Lectura del archivo
-c = np.loadtxt('monthrg.txt')
+c = np.loadtxt('monthrg2.txt')
 
 # Vector de meses
 (fil, col) = np.shape(c)
@@ -67,4 +67,29 @@ pylab.title('$\mathrm{Espectro\ de\ potencias\ del\ numero\ de\ manchas}$', font
 pylab.grid(True)
 pylab.savefig('PotenciaManchasPeriodo')
 
+# Filtro pasa bajas
+fft_Filt = fft_manchas
 
+freqCorte = 1/(12.0)
+for i in range(len(freq)):
+	if (abs(freq[i])>freqCorte):
+		fft_Filt[i] = 0.0
+
+f4 = abs(fft_Filt)*abs(fft_Filt)
+fig3 = plt.figure()
+pylab.plot(freq,abs(f4))
+pylab.xlabel('$f\ [1/mes]$')
+pylab.ylabel('$(F\{N\})^2(f)\ [manchas.mes]^2$')
+pylab.title('$\mathrm{Espectro\ de\ potencias\ del\ numero\ de\ manchas\ con\ filtro}$', fontsize=20)
+pylab.grid(True)
+pylab.savefig('PotenciaManchasFiltradas')
+
+# Senal sin filtros
+manchasLimpias = np.fft.ifft(fft_Filt)
+fig4 = plt.figure()
+pylab.scatter(anos,np.real(manchasLimpias))
+pylab.xlabel('$Ano$')
+pylab.ylabel('$N(n)$')
+pylab.title('Numero de manchas solares en funcion del anho')
+pylab.grid(True)
+pylab.savefig('GraficaManchasLimpias')
