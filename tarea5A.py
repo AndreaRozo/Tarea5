@@ -122,5 +122,6 @@ maA = np.where(f7 == f7.max())
 maxA = float(anos[maA[0]+miA[0]+1+mA[0]+1])
 
 proxMax = maxA + perMax
-print "Proximo maximo: ",proxMax
+print "Proximo maximo: ",proxMax,'\n'
+print "Proximos cinco maximos: \n",proxMax,'\n',proxMax+perMax,'\n',proxMax+perMax+perMax,'\n',proxMax+perMax+perMax+perMax,'\n',proxMax+perMax+perMax+perMax+perMax
 
