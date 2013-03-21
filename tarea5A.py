@@ -69,19 +69,58 @@ pylab.title('$\mathrm{Espectro\ de\ potencias\ del\ numero\ de\ manchas}$', font
 pylab.grid(True)
 pylab.savefig('PotenciaManchasPeriodo')
 
-# Filtro para la Transformada de Fourier
+# Filtro pasa-bajas
 fft_filtrado = fft_manchas_shift
 freq_corte = 1/12.0
-fft_filtrado[np.abs(freq_shifted) > freq_corte] = 0
-                
-inv_filtro = np.fft.ifft(fft_filtrado)
+for i in range(len(freq_shifted)):
+        if(abs(freq_shifted[i]) > freq_corte):
+           fft_filtrado[i] = 0.0
+
+f4 = abs(fft_filtrado)*abs(fft_filtrado)
+inv_filtro = np.fft.ifft(fft_filtrado)*n
 
 fig3 = plt.figure()
-pylab.plot(freq,abs(fft_filtrado))
-#pylab.scatter(anos,abs(np.real(inv_filtro)))
+pylab.plot(freq_shifted,abs(f4))
+pylab.xlabel('$f\ [1/mes]$')
+pylab.ylabel('$(F\{N\})^2(f)\ [manchas.mes]^2$')
+pylab.title('$\mathrm{Espectro\ de\ potencias\ del\ numero\ de\ manchas\ con\ filtro}$', fontsize=18)
+pylab.grid(True)
+pylab.savefig('PotenciaManchasFiltradas')
+
+fig4 = plt.figure()
+pylab.scatter(anos,abs(np.real(inv_filtro)))
 pylab.xlabel('$A\~no$')
 pylab.ylabel('$N(n)$')
 pylab.title('$\mathrm{Numero\ de\ manchas\ solares\ limpias\ en\ funcion\ del\ a\~no}$', fontsize=18)
 pylab.grid(True)
 pylab.savefig('GraficaManchasLimpias')
+
+# Grafica comparativa
+fig4 = plt.figure()
+pylab.plot(anos,manchas,'bo',anos,abs(np.real(inv_filtro)),'ro')
+pylab.xlabel('$A\~no$')
+pylab.ylabel('$N(n)$')
+pylab.title('$\mathrm{Numero\ de\ manchas\ solares\ en\ funcion\ del\ a\~no}$', fontsize=18)
+pylab.grid(True)
+pylab.savefig('GraficaComparativaManchas')
+
+# Proximo maximo
+p = np.where(f3 == f3.max())
+perMax = float(per[p[0]])
+print "Periodo para que se presente un maximo: ",perMax
+
+f5 = abs(np.real(inv_filtro))
+mA = np.where(f5 == f5.max())
+mxA = float(anos[mA[0]])
+
+f6 = f5[int(mA[0])+1:len(f5)]
+miA = np.where(f6 == f6.min())
+minA = float(anos[miA[0]+mA[0]+1])
+
+f7 = f6[int(miA[0])+1:len(f6)]
+maA = np.where(f7 == f7.max())
+maxA = float(anos[maA[0]+miA[0]+1+mA[0]+1])
+
+proxMax = maxA + perMax
+print "Proximo maximo: ",proxMax
 
